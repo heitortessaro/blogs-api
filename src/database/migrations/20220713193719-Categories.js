@@ -15,7 +15,7 @@ module.exports = {
       },
       name: {
         allowNull: false,
-        type:Sequelize.SRING,
+        type:Sequelize.STRING,
       }
     })
     
