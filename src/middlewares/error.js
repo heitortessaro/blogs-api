@@ -1,14 +1,15 @@
 module.exports = (err, _req, res, _next) => {
+  // console.log('Chegou');
   if (err.isJoi) {
     return res.status(400).json({
-      error: { message: err.details[0].message },
+      message: err.details[0].message,
     });
   }
 
   if (err.statusCode) {
-    return res.status(err.statusCode).json({
-      error: { message: err.message },
-    });
+    return res.status(err.statusCode).json(
+      { message: err.message },
+    );
   }
 
   return res.status(500).json({
