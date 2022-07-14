@@ -6,12 +6,10 @@ const { User } = require('../database/models/index');
 
 const validateBody = async (body) => {
   const schema = Joi.object({
-    email: Joi.string().email().required().messages({
-      'any.required': 'Some required fields are missing',
-    }),
-    password: Joi.string().required().messages({
-      'any.required': 'Some required fields are missing',
-    }),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }).messages({
+    'string.empty': 'Some required fields are missing',
   });
   const { error } = await schema.validateAsync(body);
   if (error) throw error;
