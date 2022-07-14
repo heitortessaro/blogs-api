@@ -31,8 +31,16 @@ const addNewUser = async ({ displayName, email, password, image }) => {
   createError(500, 'Problems adding user to the DB');
 };
 
+const getAllUsers = async () => {
+  const result = await User.findAll({
+    attributes: ['id', 'displayName', 'email', 'image'],
+  });
+  return result;
+};
+
 module.exports = {
   validateBody,
   validateNewEmail,
   addNewUser,
+  getAllUsers,
 };

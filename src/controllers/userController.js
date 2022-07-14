@@ -9,6 +9,12 @@ const addUser = async (req, res) => {
   res.status(201).json({ token });
 };
 
+const getAllUsers = async (_req, res) => {
+  const users = await userService.getAllUsers();
+  return res.status(200).json(users);
+};
+
 module.exports = {
   addUser,
+  getAllUsers,
 };
