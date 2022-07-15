@@ -2,8 +2,8 @@ const authService = require('../services/authService');
 
 const validateToken = async (req, _res, next) => {
   const { authorization } = req.headers;
-  const email = authService.validateToken(authorization);
-  req.email = email;
+  const { email, id } = authService.validateToken(authorization);
+  req.user = { email, id };
   next();
 };
 

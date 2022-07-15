@@ -17,11 +17,11 @@ const validateBody = async (body) => {
 
 const validateUserCredentials = async ({ email, password }) => {
   const user = await User.findOne({ where: { email } });
-  // throw 'error';
   if (!user || user.password !== password) {
     createError(400, 'Invalid fields');
   }
-  const token = jwtService.createToken({ email });
+  const { id } = user;
+  const token = jwtService.createToken({ email, id });
   return token;
 };
 

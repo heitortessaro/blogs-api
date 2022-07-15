@@ -25,7 +25,8 @@ const validateNewEmail = async ({ email }) => {
 const addNewUser = async ({ displayName, email, password, image }) => {
   const result = await User.create({ displayName, email, password, image });
   if (result) {
-    const token = jwtService.createToken({ email });
+    const { id } = result;
+    const token = jwtService.createToken({ email, id });
     return token;
   } 
   createError(500, 'Problems adding user to the DB');
