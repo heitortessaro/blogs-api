@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
   });
   
   // 1:N
-  // User.associate = (models) => {
-  //   User.hasMany(models.BlogPosts,
-  //     { foreignKey: 'id', as: 'userId' });
-  // };
+  User.associate = (models) => {
+    User.hasMany(models.BlogPost,
+      { foreignKey: 'userId', as: 'BlogPosts' });
+  };
   return User;
 };
