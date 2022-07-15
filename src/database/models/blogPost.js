@@ -18,12 +18,6 @@ module.exports = (sequilize, DataTypes) => {
       {foreingKey: 'userId', as: 'user'})
   }
 
-  // 1:N
-  // Category.associate = (models) => {
-  //   Category.hasMany(models.PostCategories,
-  //     { foreignKey: 'id', as: 'categoryId' });
-  // };
-
   return BlogPost
 }
 
