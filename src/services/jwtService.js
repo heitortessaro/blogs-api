@@ -2,9 +2,9 @@ require('dotenv/config');
 const jwt = require('jsonwebtoken');
 const createError = require('../helpers/createError');
 
-const createToken = ({ email }) => {
+const createToken = ({ email, id }) => {
     const { JWT_SECRET } = process.env;
-    const payload = { email };
+    const payload = { email, id };
     const token = jwt.sign(payload, JWT_SECRET, {
       expiresIn: '20m',
       algorithm: 'HS256',
@@ -14,8 +14,8 @@ const createToken = ({ email }) => {
 
 const validateToken = (token) => {
     try {
-      const { email } = jwt.verify(token, process.env.JWT_SECRET);
-      return email;
+      const { email, id } = jwt.verify(token, process.env.JWT_SECRET);
+      return { email, id };
     } catch (_erro) {
       createError(401, 'Expired or invalid token');
     }
