@@ -11,6 +11,14 @@ const validateBody = async (body) => {
   if (error) throw error;
 };
 
+const validateId = async ({ categoryIds }) => {
+  const result = await Category.findAll({ attributes: ['id'] });
+  const existingCategoriesIds = result.map((category) => category.id);
+  const allExist = categoryIds.every((id) => existingCategoriesIds.includes(id));
+  console.log(allExist);
+  if (!allExist) createError(400, '"categoryIds" not found');
+};
+
 const addCategory = async ({ name }) => {
   const result = await Category.create({ name });
   if (result) {
@@ -28,4 +36,5 @@ module.exports = {
   getAllCategories,
   validateBody,
   addCategory,
+  validateId,
 };
