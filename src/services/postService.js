@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const Joi = require('joi');
 const createError = require('../helpers/createError');
-const { BlogPost, PostCategory } = require('../database/models/index');
+const { BlogPost, PostCategory, User, Category } = require('../database/models/index');
 const config = require('../database/config/config');
 
 const sequelize = new Sequelize(config.development);
@@ -37,7 +37,27 @@ async function addPost({ title, content, categoryIds, userId }) {
   }
 }
 
+async function getAllPosts() {
+  const result = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      // { model: Category, as: 'categories', through: { attributes: [] } },
+      { model: Category, as: 'categories', attributes: ['id', 'name'] },
+    ],
+  });
+  return result;
+}
+
+// Patients.findAll({
+//   include: { model: Surgeries, as: 'surgeries', through: { attributes: [] } },
+// })
+
+// const pets = await Pet.findAll({
+//   include: [{ model: User, as: 'user', attributes: { exclude: ['passwordHash'] } }],
+// });
+
 module.exports = {
   addPost,
   validateBody,
+  getAllPosts,
 };

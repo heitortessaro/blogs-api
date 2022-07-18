@@ -11,6 +11,20 @@ const addPost = async (req, res) => {
   return res.status(201).json(post);
 };
 
+const getAllPosts = async (_req, res) => {
+  const posts = await postService.getAllPosts();
+  return res.status(200).json(posts);
+};
+
+// Patients.findAll({
+//   include: { model: Surgeries, as: 'surgeries', through: { attributes: [] } },
+// })
+
+// const pets = await Pet.findAll({
+//   include: [{ model: User, as: 'user', attributes: { exclude: ['passwordHash'] } }],
+// });
+
 module.exports = {
   addPost,
+  getAllPosts,
 };

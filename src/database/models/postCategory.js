@@ -12,14 +12,18 @@ module.exports = (sequilize, DataTypes) => {
     models.BlogPost.belongsToMany(models.Category, {
       as: 'categories',
       through: PostCategory,
-      foreingKey: 'id',
-      otherKey: 'id',
+      // foreingKey: 'id',
+      // otherKey: 'id',
+      foreignKey: 'categoryId',
+      otherKey: 'postId'
     }),
     models.Category.belongsToMany(models.BlogPost, {
       as: 'blogPosts',
       through:PostCategory,
-      foreingKey: 'id',
-      otherKey: 'id',
+      // foreingKey: 'id',
+      // otherKey: 'id',
+      foreignKey: 'postId',
+      otherKey: 'categoryId',
     })
   }
 
