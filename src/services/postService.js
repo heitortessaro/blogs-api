@@ -18,6 +18,17 @@ const validateBody = async (body) => {
   if (error) throw error;
 };
 
+const validateBodyUpdate = async (body) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().required(),
+  }).messages({
+    'string.empty': 'Some required fields are missing',
+  });
+  const { error } = await schema.validateAsync(body);
+  if (error) throw error;
+};
+
 async function addPost({ title, content, categoryIds, userId }) {
   const t = await sequelize.transaction();
   try {
@@ -25,10 +36,8 @@ async function addPost({ title, content, categoryIds, userId }) {
       { title, content, userId, updated: new Date(), published: new Date() },
       { transaction: t },
     );
-    console.log(newBlogPost.id);
     const postAndCategoriesIds = categoryIds.map((id) => ({ postId: newBlogPost.id,  
         categoryId: id }));
-    console.log(postAndCategoriesIds);
     const result = await PostCategory.bulkCreate(postAndCategoriesIds, { transaction: t });
     if (!result) throw new Error('Error with Adding to PostCategory');
     await t.commit();
@@ -49,14 +58,6 @@ async function getAllPosts() {
   return result;
 }
 
-// Patients.findAll({
-//   include: { model: Surgeries, as: 'surgeries', through: { attributes: [] } },
-// })
-
-// const pets = await Pet.findAll({
-//   include: [{ model: User, as: 'user', attributes: { exclude: ['passwordHash'] } }],
-// });
-
 async function getPostById({ id }) {
   const result = await BlogPost.findByPk(id, {
     include: [
@@ -70,15 +71,29 @@ async function getPostById({ id }) {
   return result;
 }
 
-// async function editPost({ title, content }) {
-//   console.log(title);
-//   console.log(content);
-// }
+async function updatePost({ title, content, id, userId }) {
+  const post = await BlogPost.findByPk(id, {
+      include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Category, as: 'categories', through: { attributes: [] } },
+      ],
+    });
+  if (!post) {
+    createError(404, 'Post does not exist');
+  }
+  if (userId !== post.userId) {
+    createError(401, 'Unauthorized user');
+  }
+  post.set({ content, title, updated: new Date() });
+  await post.save();
+  return post;
+}
 
 module.exports = {
   addPost,
   validateBody,
   getAllPosts,
   getPostById,
-  // editPost,
+  updatePost,
+  validateBodyUpdate,
 };
