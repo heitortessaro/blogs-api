@@ -44,7 +44,6 @@ async function getAllPosts() {
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
       { model: Category, as: 'categories', through: { attributes: [] } },
-      // { model: Category, as: 'categories', attributes: ['id', 'name'] },
     ],
   });
   return result;
@@ -71,9 +70,15 @@ async function getPostById({ id }) {
   return result;
 }
 
+// async function editPost({ title, content }) {
+//   console.log(title);
+//   console.log(content);
+// }
+
 module.exports = {
   addPost,
   validateBody,
   getAllPosts,
   getPostById,
+  // editPost,
 };
