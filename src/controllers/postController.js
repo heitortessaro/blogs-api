@@ -16,15 +16,14 @@ const getAllPosts = async (_req, res) => {
   return res.status(200).json(posts);
 };
 
-// Patients.findAll({
-//   include: { model: Surgeries, as: 'surgeries', through: { attributes: [] } },
-// })
-
-// const pets = await Pet.findAll({
-//   include: [{ model: User, as: 'user', attributes: { exclude: ['passwordHash'] } }],
-// });
+const getPostById = async (req, res) => {
+  const { id } = req.params;
+  const user = await postService.getPostById({ id });
+  return res.status(200).json(user);
+};
 
 module.exports = {
   addPost,
   getAllPosts,
+  getPostById,
 };

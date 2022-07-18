@@ -25,8 +25,10 @@ async function addPost({ title, content, categoryIds, userId }) {
       { title, content, userId, updated: new Date(), published: new Date() },
       { transaction: t },
     );
+    console.log(newBlogPost.id);
     const postAndCategoriesIds = categoryIds.map((id) => ({ postId: newBlogPost.id,  
         categoryId: id }));
+    console.log(postAndCategoriesIds);
     const result = await PostCategory.bulkCreate(postAndCategoriesIds, { transaction: t });
     if (!result) throw new Error('Error with Adding to PostCategory');
     await t.commit();
@@ -41,8 +43,8 @@ async function getAllPosts() {
   const result = await BlogPost.findAll({
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
-      // { model: Category, as: 'categories', through: { attributes: [] } },
-      { model: Category, as: 'categories', attributes: ['id', 'name'] },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+      // { model: Category, as: 'categories', attributes: ['id', 'name'] },
     ],
   });
   return result;
@@ -56,8 +58,22 @@ async function getAllPosts() {
 //   include: [{ model: User, as: 'user', attributes: { exclude: ['passwordHash'] } }],
 // });
 
+async function getPostById({ id }) {
+  const result = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  if (!result) {
+    createError(404, 'Post does not exist');
+  }
+  return result;
+}
+
 module.exports = {
   addPost,
   validateBody,
   getAllPosts,
+  getPostById,
 };

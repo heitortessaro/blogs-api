@@ -6,7 +6,7 @@ const createToken = ({ email, id }) => {
     const { JWT_SECRET } = process.env;
     const payload = { email, id };
     const token = jwt.sign(payload, JWT_SECRET, {
-      expiresIn: '20m',
+      expiresIn: '6h',
       algorithm: 'HS256',
     });
     return token;
