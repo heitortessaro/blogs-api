@@ -1,7 +1,12 @@
 const Sequelize = require('sequelize');
 const Joi = require('joi');
 const createError = require('../helpers/createError');
-const { BlogPost, PostCategory, User, Category } = require('../database/models/index');
+const {
+  BlogPost,
+  PostCategory,
+  User,
+  Category,
+} = require('../database/models/index');
 const config = require('../database/config/config');
 
 const sequelize = new Sequelize(config.development);
@@ -36,8 +41,10 @@ async function addPost({ title, content, categoryIds, userId }) {
       { title, content, userId, updated: new Date(), published: new Date() },
       { transaction: t },
     );
-    const postAndCategoriesIds = categoryIds.map((id) => ({ postId: newBlogPost.id,  
-        categoryId: id }));
+    const postAndCategoriesIds = categoryIds.map((id) => ({
+      postId: newBlogPost.id,
+      categoryId: id,
+    }));
     const result = await PostCategory.bulkCreate(postAndCategoriesIds, { transaction: t });
     if (!result) throw new Error('Error with Adding to PostCategory');
     await t.commit();
@@ -73,11 +80,11 @@ async function getPostById({ id }) {
 
 async function updatePost({ title, content, id, userId }) {
   const post = await BlogPost.findByPk(id, {
-      include: [
-        { model: User, as: 'user', attributes: { exclude: ['password'] } },
-        { model: Category, as: 'categories', through: { attributes: [] } },
-      ],
-    });
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
   if (!post) {
     createError(404, 'Post does not exist');
   }
@@ -86,7 +93,19 @@ async function updatePost({ title, content, id, userId }) {
   }
   post.set({ content, title, updated: new Date() });
   await post.save();
+  await post.reload();
   return post;
+}
+
+async function deletePost({ id, userId }) {
+  const post = await BlogPost.findByPk(id);
+  if (!post) {
+    createError(404, 'Post does not exist');
+  }
+  if (userId !== post.userId) {
+    createError(401, 'Unauthorized user');
+  }
+  await post.destroy();
 }
 
 module.exports = {
@@ -96,4 +115,5 @@ module.exports = {
   getPostById,
   updatePost,
   validateBodyUpdate,
+  deletePost,
 };
