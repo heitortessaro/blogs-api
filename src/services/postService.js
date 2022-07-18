@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const Joi = require('joi');
 const createError = require('../helpers/createError');
 const {
@@ -108,6 +109,23 @@ async function deletePost({ id, userId }) {
   await post.destroy();
 }
 
+async function searchPost({ query }) {
+  const querySequilize = `%${query}%`;
+  const result = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: querySequilize } },
+        { content: { [Op.like]: querySequilize } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return result;
+}
+
 module.exports = {
   addPost,
   validateBody,
@@ -116,4 +134,5 @@ module.exports = {
   updatePost,
   validateBodyUpdate,
   deletePost,
+  searchPost,
 };
