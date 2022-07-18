@@ -50,10 +50,19 @@ const getUser = async ({ id }) => {
   return result;
 };
 
+const deleteUser = async ({ id }) => {
+  const user = await User.findByPk(id);
+  if (!user) {
+    createError(404, 'User does not exist');
+  }
+  await user.destroy();
+};
+
 module.exports = {
   validateBody,
   validateNewEmail,
   addNewUser,
   getAllUsers,
   getUser,
+  deleteUser,
 };

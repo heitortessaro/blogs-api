@@ -8,6 +8,7 @@ const router = Router();
 
 router.post('/', userController.addUser);
 router.get('/', authController.validateToken, userController.getAllUsers);
+router.delete('/me', authController.validateToken, userController.deleteUser);
 router.get('/:id', authController.validateToken, userController.getUser);
 
 module.exports = router;
