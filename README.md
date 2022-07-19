@@ -40,7 +40,7 @@ cd project
 Step 3. Clone the project:
 
 ~~~bash
-git clone repo 
+git clone git@github.com:heitortessaro/blogs-api.git 
 ~~~
 
 Step 4. Change to the cloned directory:
