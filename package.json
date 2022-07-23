@@ -15,12 +15,13 @@
     "morgan": "^1.10.0",
     "mysql2": "2.1.0",
     "sequelize": "6.3.4",
+    "sequelize-cli": "6.2.0",
     "shelljs": "0.8.4"
   },
   "main": "src/server.js",
   "scripts": {
     "prestart": "npx sequelize-cli db:create && npx sequelize-cli db:migrate",
-    "start": "node .",
+    "start": "node src/server",
     "start:test": "API_PORT=3030 NODE_ENV=test npm start",
     "kill:test": "kill -9 $(lsof -t -i:3030) &> /dev/null",
     "drop": "npx sequelize-cli db:drop",
