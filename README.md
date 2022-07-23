@@ -4,6 +4,8 @@
 
 This project consists of a REST API, being part of the Trybe Web Development Course. The API is a blog management system. It enables users to create, visualize, delete, and update blog posts, as well as a categogy list to classify the posts. All routes require authentication based on JWT.
 
+Heroku was used to make the API deploy. following is the API link: https://heitor-blogs-api.herokuapp.com 
+
 ## Documentation
 
 The complete API documentation was developed using Postman. You can access the documentation with comments and examples for all routes using this [link](https://documenter.getpostman.com/view/21397186/UzQyqP5N). 
