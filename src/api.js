@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
 const loginRouter = require('./routes/loginRoutes');
 const userRouter = require('./routes/userRoutes');
 const categoryRoute = require('./routes/categoryRoute');
@@ -8,7 +10,8 @@ const middlewares = require('./middlewares/index');
 require('express-async-errors');
 
 const app = express();
-
+app.use(cors());
+app.use(helmet());
 app.use(express.json());
 
 app.use('/login', loginRouter);
