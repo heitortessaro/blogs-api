@@ -6,7 +6,7 @@ This project consists of a REST API, being part of the Trybe Web Development Cou
 
 ## Documentation
 
-The complete API documentation was developed using Postman. You can access the documentation with comments and examples for all routes using this [link](https://documenter.getpostman.com/view/21397186/UzQyqP5N).
+The complete API documentation was developed using Postman. You can access the documentation with comments and examples for all routes using this [link](https://documenter.getpostman.com/view/21397186/UzQyqP5N). 
 
 ## Used Technologies & Arquitecture
 
