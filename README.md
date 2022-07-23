@@ -61,4 +61,4 @@ Step 6. Run the application
 npm run start
 ~~~
 
-The application should start running in your terminal.
+The application should start running in your terminal. 
